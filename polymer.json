@@ -1,4 +1,16 @@
 {
+  "builds": [{
+    "name": "bundled",
+    "bundle": true,
+    "js": {"minify": true, "compile": true},
+    "css": {"minify": true},
+    "html": {"minify": true}
+  },{
+    "name": "unbundled",
+    "js": {"minify": true},
+    "css": {"minify": true},
+    "html": {"minify": true}
+  }],
   "entrypoint": "index.html",
   "shell": "src/my-app.html",
   "fragments": [
