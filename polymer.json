@@ -20,7 +20,8 @@
     "src/my-view404.html"
   ],
   "sources": [
-    "src/**/*",
+    "src/scripts/app.js",
+    "src/**/*.html",
     "images/**/*",
     "bower.json"
   ],
