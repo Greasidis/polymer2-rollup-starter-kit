@@ -1,3 +1,15 @@
+# Polymer App Toolbox - Starter Kit + Gulp
+
+This is an attempt to add Gulp to the PSK and add all the features found in PSK 0.5 like:
+* BrowserSync live reload
+* Babel transpilation step
+
+Additionally it adds:
+* Rollup for transpiling ES6 page scripts
+* RealFavicon for icon generation
+
+# PSK README
+
 # Polymer App Toolbox - Starter Kit
 
 [![Build Status](https://travis-ci.org/PolymerElements/polymer-starter-kit.svg?branch=master)](https://travis-ci.org/PolymerElements/polymer-starter-kit)
