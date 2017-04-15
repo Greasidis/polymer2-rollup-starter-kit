@@ -1,9 +1,11 @@
 /* jshint esversion: 6 */
 const del = require('del');
+const path = require('path');
 const cssSlam = require('css-slam').gulp;
 
 const gulp = require('gulp');
 const gulpif = require('gulp-if');
+const gulpignore = require('gulp-ignore');
 const gutil = require('gulp-util');
 const htmlMinifier = require('gulp-html-minifier');
 const imagemin = require('gulp-imagemin');
@@ -51,7 +53,6 @@ function waitFor(stream) {
 
 function rollupApp() {
   return $.rollup({
-    allowRealFiles: true, // !IMPORTANT, it avoids the hypothetical file system error
     entry: 'src/scripts/app.js',
     // sourceMap: true,
     plugins: [babel({
@@ -67,8 +68,8 @@ function jsRollup() {
    // .pipe($.sourcemaps.init())
    .pipe(rollupApp())
    // .pipe($.sourcemaps.write('.'))
-   .pipe(gulp.dest(`${buildDirectory}/src/scripts`))
-   .pipe(gulp.dest(dist()));
+   // .pipe(gulp.dest(`${buildDirectory}/src/scripts`));
+   .pipe(gulp.dest(dist('src')));
 }
 gulp.task('js-rollup', jsRollup);
 
@@ -79,7 +80,8 @@ function buildPolymer() {
     const sourcesHtmlSplitter = new HtmlSplitter();
     // Okay, now let's get your source files
     let sourcesStream = project.sources()
-      .pipe(gulpif(/scripts\/app\.js$/, rollupApp()));
+      .pipe(gulpignore.exclude(/scripts\/.*\.js$/));
+      // .pipe(gulpif(/scripts\/app\.js$/, rollupApp()));
 
     // Okay, now let's do the same to your dependencies
     let dependenciesStream = project.dependencies();
@@ -110,7 +112,8 @@ function buildPolymerDist() {
     // Okay, now let's get your source files
     let sourcesStream = project.sources()
       .pipe(sourcesHtmlSplitter.split())
-      .pipe(gulpif(/scripts\/app\.js$/, rollupApp()))
+      .pipe(gulpignore.exclude(/scripts\/.*\.js$/))
+      // .pipe(gulpif(/scripts\/app\.js$/, rollupApp()))
       // .pipe(gulpif(/\.js$/, $.babel({
       //   presets: ['es2015']
       // })))
@@ -167,14 +170,14 @@ gulp.task('build-polymer-dist', buildPolymerDist);
 gulp.task('build', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
   runSequence(
-    'build-polymer',
+    ['build-polymer', 'js-rollup'],
     cb);
 });
 
 gulp.task('build:dist', ['clean'], function(cb) {
   // Uncomment 'cache-config' if you are going to use service workers.
   runSequence(
-    'build-polymer-dist',
+    ['build-polymer-dist', 'js-rollup'],
     cb);
 });
 
