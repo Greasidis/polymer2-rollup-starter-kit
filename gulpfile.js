@@ -51,6 +51,7 @@ function waitFor(stream) {
 
 function rollupApp() {
   return $.rollup({
+    allowRealFiles: true, // !IMPORTANT, it avoids the hypothetical file system error
     entry: 'src/scripts/app.js',
     // sourceMap: true,
     plugins: [babel({
@@ -62,7 +63,7 @@ function rollupApp() {
 }
 
 function jsRollup() {
-  return gulp.src(['src/scripts/app.js'])
+  return gulp.src(['src/**/*.js'])
    // .pipe($.sourcemaps.init())
    .pipe(rollupApp())
    // .pipe($.sourcemaps.write('.'))
