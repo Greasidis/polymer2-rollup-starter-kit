@@ -22,6 +22,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
 
+<link rel="lazy-import" href="my-view1.html">
+<link rel="lazy-import" href="my-view2.html">
+<link rel="lazy-import" href="my-view3.html">
+<link rel="lazy-import" href="my-view404.html">
+
 <dom-module id="my-app">
   <template>
     <style>
@@ -66,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
-        pattern="/:page"
+        pattern="[[rootPattern]]:page"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
@@ -75,9 +80,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" slot="drawer">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/view1">View One</a>
-          <a name="view2" href="/view2">View Two</a>
-          <a name="view3" href="/view3">View Three</a>
+          <a name="view1" href="view1">View One</a>
+          <a name="view2" href="view2">View Two</a>
+          <a name="view3" href="view3">View Three</a>
         </iron-selector>
       </app-drawer>
 
@@ -118,6 +123,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             reflectToAttribute: true,
             observer: '_pageChanged',
           },
+          rootPattern: String,
+          routeData: Object,
+          subroute: String,
         };
       }
 
@@ -125,6 +133,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return [
           '_routePageChanged(routeData.page)',
         ];
+      }
+
+      constructor() {
+        super();
+
+        // Get root pattern for app-route, for more info about `rootPath` see:
+        // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
+        this.rootPattern = (new URL(this.rootPath)).pathname;
       }
 
       _routePageChanged(page) {
