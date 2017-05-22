@@ -1,3 +1,5 @@
+/* eslint-env es6, node, mocha */
+/* eslint no-console: "allow" */
 /* jshint esversion: 6 */
 const del = require('del');
 const path = require('path');
@@ -10,7 +12,7 @@ const gutil = require('gulp-util');
 const htmlMinifier = require('gulp-html-minifier');
 const imagemin = require('gulp-imagemin');
 const uglify = require('gulp-uglify');
-const $ = require('gulp-load-plugins')();
+var $ = require('gulp-load-plugins')();
 
 const mergeStream = require('merge-stream');
 const polymerBuild = require('polymer-build');
@@ -242,6 +244,30 @@ gulp.task('serve:dist', ['build:dist'], function() {
   gulp.watch(['src/**/*'], ['build-polymer-dist', reload]);
   // gulp.watch(['styles/**/*.css'], ['build-polymer-dist', reload]);
   gulp.watch(['images/**/*'], ['build-polymer-dist', reload]);
+});
+
+
+
+gulp.task('default', ['serve'], function() {});
+
+// Build then deploy to GitHub pages gh-pages branch
+gulp.task('build-deploy-gh-pages', function(cb) {
+  runSequence(
+    'build',
+    'deploy-gh-pages',
+    cb);
+});
+
+// Deploy to GitHub pages gh-pages branch
+gulp.task('deploy-gh-pages', function() {
+  return gulp.src(dist('**/*'))
+    // Check if running task from Travis CI, if so run using GH_TOKEN
+    // otherwise run using ghPages defaults.
+    .pipe($.if(process.env.TRAVIS === 'true', $.ghPages({
+      remoteUrl: 'https://$GH_TOKEN@github.com/Greasidis/polymer2-rollup-starter-kit.git',
+      silent: true,
+      branch: 'gh-pages'
+    }), $.ghPages()));
 });
 
 
