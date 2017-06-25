@@ -23,6 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       For example: href="/polymer-starter-kit/relative-path-example/"
     -->
     <base href="/">
+    <!-- <base href="/polymer2-rollup-starter-kit/"> -->
 
     <link rel="icon" href="images/favicon.ico">
 
@@ -55,7 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <script>
       // Register the base URL
-      var baseUrl = document.querySelector('base').href;
+      const baseUrl = document.querySelector('base').href;
 
       // Load and register pre-caching Service Worker
       if ('serviceWorker' in navigator) {
