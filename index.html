@@ -23,7 +23,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       For example: href="/polymer-starter-kit/relative-path-example/"
     -->
     <!-- <base href="/"> -->
-    <base href="/polymer2-rollup-starter-kit/">
+    <script>
+      if (window.location.port === '') { // if production
+        document.write('<base href="/polymer2-rollup-starter-kit/">');
+      } else {
+        document.write('<base href="/">');
+      }
+    </script>
 
     <link rel="icon" href="images/favicon.ico">
 
