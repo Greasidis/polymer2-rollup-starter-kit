@@ -22,8 +22,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       If deploying to a non-root path, replace href="/" with the full path to the project root.
       For example: href="/polymer-starter-kit/relative-path-example/"
     -->
-    <base href="/">
-    <!-- <base href="/polymer2-rollup-starter-kit/"> -->
+    <!-- <base href="/"> -->
+    <script>
+      if (window.location.port === '') { // if production
+        document.write('<base href="/polymer2-rollup-starter-kit/">');
+      } else {
+        document.write('<base href="/">');
+      }
+    </script>
 
     <link rel="icon" href="images/favicon.ico">
 
